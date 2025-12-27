@@ -1,18 +1,20 @@
-name: CI/CD pipeline
+name: CI Pipeline
 
-on: 
+on:
   push:
-    branches: [ "main" ]
-  pull_request: 
-    branches: [ "main" ]
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-jobs: 
- validate-repo:
-  runs-on: ubuntu-latest
+jobs:
+  validate:
+    runs-on: ubuntu-latest
 
-  steps:
-    - name: checkout-code
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: List Repository files
-      uses: ls -R
+      - name: List files
+        run: ls -R
