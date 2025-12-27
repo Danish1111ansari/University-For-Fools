@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Set up java 17
-        uses: actions/setup-java@4
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -31,5 +31,5 @@ jobs:
         run: |
           cd Course
           mvn clean test
-          
+
       
