@@ -15,6 +15,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: List files
-        run: ls -R
+      
+      - name: Set up java 17
+        uses: actions/setup-java@4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: Build Student Service
+        run: |
+          cd student
+          mvn clean test
+      
+      - name: Build Course Service
+        run: |
+          cd Course
+          mvn clean test
+          
+      
