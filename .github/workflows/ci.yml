@@ -29,7 +29,7 @@ jobs:
       
       - name: Build Course Service
         run: |
-          cd Course
+          cd course
           mvn clean test
 
       
