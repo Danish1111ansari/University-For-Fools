@@ -61,7 +61,7 @@ jobs:
       # push student service docker image
       - name: push student service docker image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/student-service:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/student-service:${{ github.sha }}
 
        # Build course service docker image
       - name: build course  service docker image
@@ -71,7 +71,7 @@ jobs:
       # push course service docker image
       - name: push course service docker image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/course-service:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/course-service:${{ github.sha }}
 
 
 
