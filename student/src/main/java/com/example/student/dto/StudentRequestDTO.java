@@ -3,6 +3,10 @@ package com.example.student.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+
+@Data
 
 public class StudentRequestDTO {
 
@@ -15,7 +19,7 @@ public class StudentRequestDTO {
 
     @NotNull(message = "Age must not be null")
     @Min(value = 18, message = "Student must be at least 18 years old")
-    private int age;
+    private Integer age;
 
 
 }
