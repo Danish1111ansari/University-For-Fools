@@ -3,6 +3,7 @@ package com.example.student.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.student.dto.StudentRequestDTO;
+import com.example.student.response.ApiResponse;
 
 import jakarta.validation.Valid;
 
@@ -20,11 +21,17 @@ public class StudentController {
 
 
     @PostMapping
-    
-    public ResponseEntity<?> createStudent(@RequestBody @Valid StudentRequestDTO studentRequestDTO) {
+    public ResponseEntity<ApiResponse<StudentRequestDTO>> createStudent(@RequestBody @Valid StudentRequestDTO studentRequestDTO) {
         // Implementation for creating a student
-        return ResponseEntity.status(HttpStatus.CREATED).body(studentRequestDTO);
-    }
+        ApiResponse<StudentRequestDTO> response = ApiResponse.success(
+            HttpStatus.CREATED.value(),
+            "Student created successfully",
+            studentRequestDTO,
+            "/api/v1/students"
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     
 
+      }
 }
