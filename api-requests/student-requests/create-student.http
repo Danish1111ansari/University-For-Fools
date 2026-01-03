@@ -3,7 +3,7 @@ POST http://localhost:8081/api/v1/students
 Content-Type: application/json
 
 {
-  "name": "Danish Ansari",
+  "name": " Danish Ansari",
   "email": "danish@gmail.com",
   "age": 22
 }   

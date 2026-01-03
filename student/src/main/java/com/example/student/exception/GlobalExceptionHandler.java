@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     // validation error handling
     @ExceptionHandler(MethodArgumentNotValidException.class)
 
-    public ResponseEntity<ApiError> handleVaEntitylidationException(MethodArgumentNotValidException ex, HttpServletRequest request) {
+    public ResponseEntity<ApiError> handleEntityValidationException(MethodArgumentNotValidException ex, HttpServletRequest request) {
 
         String message = ex.getBindingResult()
         .getFieldErrors()
