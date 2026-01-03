@@ -1,15 +1,5 @@
 
 services:
-  student-service:
-    image: student-service:1.0
-    container_name: student-service
-    build:
-      context: ./student
-      dockerfile: Dockerfile
-    ports:
-      - "8081:8081"
-    networks:
-      - university-net
 
   course-service:
     image: course-service:1.0
@@ -18,9 +8,22 @@ services:
       context: ./course
       dockerfile: Dockerfile
     ports:
+      - "8081:8080"
+    networks:
+      - university-net
+
+  student-service:
+    image: student-service:1.0
+    container_name: student-service
+    build:
+      context: ./student
+      dockerfile: Dockerfile
+    ports:
       - "8082:8080"
     networks:
       - university-net
+
+ 
 
 networks:
   university-net:
