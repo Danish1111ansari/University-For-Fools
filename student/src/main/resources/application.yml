@@ -1,16 +1,17 @@
 spring:
   application:
     name: StudentService
-
-
-server:
-    port : 8081
-
-profile:
+  profiles:
     active: dev
 
 
-    
+server:
+    port : 8080
+
+
+
+
+
 
 
 
