@@ -79,3 +79,66 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/course-service:${{ github.sha }}
           docker push ${{ secrets.DOCKER_USERNAME }}/course-service:latest
+
+  deploy-k8s:
+    runs-on: ubuntu-latest
+    needs: validate
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
+        # install kubectl
+
+      - name: Set up Kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: v1.28.0
+
+        # install kind 
+      
+      - name: setup kind
+        uses: engineerd/setup-kind@v0.5.0
+        with:
+          version: v1.21.0
+
+      # create kind cluster
+      - name: Create kind cluster  
+        run: |
+          kind create cluster \
+          --name university-cluster \
+          --config k8s/kind-config.yaml
+
+      # load docker imags into kind
+      - name: Load docker images into kind
+        run: |
+          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/student-service:latest --name university-cluster
+          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/course-service:latest --name university-cluster
+
+      # Deploy services
+      - name: Deploy to Kubernetes manifests
+        run: |
+          kubectl apply -f k8s/course-deployment.yaml
+          kubectl apply -f k8s/course-service.yaml
+          kubectl apply -f k8s/student-deployment.yaml
+          kubectl apply -f k8s/student-service.yaml
+          kubectl apply -f k8s/ingress.yaml
+
+        #wait for pods to be ready
+      - name: Wait for deployments to be ready
+        run: |
+          kubectl wait --for=condition=Ready pod --all --timeout=120s
+
+      # verify deployments
+      - name: Verify Deployments
+        run: |
+          kubectl get deployments
+          kubectl get pods
+          kubectl get services
+          kubectl get ingress
+   
+          
+
+          
+     
