@@ -142,6 +142,31 @@ jobs:
           kubectl apply -f k8s/student-service.yaml
 
 
+      - name: Install NGINX Ingress Controller
+        run: |
+          kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+
+          echo "Waiting for ingress controller pod..."
+          kubectl wait \
+            --namespace ingress-nginx \
+            --for=condition=ready pod \
+            --selector=app.kubernetes.io/component=controller \
+            --timeout=180s
+
+          echo "Waiting for admission jobs..."
+          kubectl wait \
+            --namespace ingress-nginx \
+            --for=condition=complete job \
+            ingress-nginx-admission-create \
+           --timeout=180s || true
+
+          kubectl wait \
+            --namespace ingress-nginx \
+            --for=condition=complete job \
+            ingress-nginx-admission-patch \
+            --timeout=180s || true
+
+          echo "Ingress NGINX fully ready"
 
 
       - name: Apply ingress
