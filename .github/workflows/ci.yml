@@ -139,9 +139,19 @@ jobs:
           kubectl apply -f k8s/
 
         #wait for pods to be ready
-      - name: Wait for deployments to be ready
+      # Wait for application deployments
+      - name: Wait for application deployments to be ready
         run: |
-          kubectl wait --for=condition=Ready pod --all --timeout=120s
+          kubectl wait \
+            --for=condition=Available \
+            deployment/course-service \
+            --timeout=120s
+
+          kubectl wait \
+          --for=condition=Available \
+          deployment/student-service \
+          --timeout=120s
+
 
       # verify deployments
       - name: Verify Deployments
@@ -150,6 +160,11 @@ jobs:
           kubectl get pods
           kubectl get services
           kubectl get ingress
+
+      - name: Smoke test via ingress
+        run: |
+          curl -f http://university.local/api/v1/courses/1
+
    
           
 
