@@ -98,7 +98,7 @@ jobs:
 
         # install kind 
       
-      - name: setup kind
+      - name: Install kind
         uses: engineerd/setup-kind@v0.6.2
         with:
           version: v0.23.0
@@ -109,21 +109,31 @@ jobs:
           kind create cluster \
           --name university-cluster \
           --config k8s/kind-config.yaml
+      
+      - name: Install NGINX Ingress Controller
+        run: |
+          kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+          kubectl wait --namespace ingress-nginx \
+            --for=condition=ready pod \
+            --selector=app.kubernetes.io/component=controller \
+            --timeout=120s
 
-      # load docker imags into kind
-      - name: Load docker images into kind
+
+      - name: Pull Docker images from Docker Hub
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/student-service:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/course-service:latest
+
+      - name: Load Docker images into Kind
         run: |
           kind load docker-image ${{ secrets.DOCKER_USERNAME }}/student-service:latest --name university-cluster
           kind load docker-image ${{ secrets.DOCKER_USERNAME }}/course-service:latest --name university-cluster
 
+      
       # Deploy services
       - name: Deploy to Kubernetes manifests
         run: |
-          kubectl apply -f k8s/course-deployment.yaml
-          kubectl apply -f k8s/course-service.yaml
-          kubectl apply -f k8s/student-deployment.yaml
-          kubectl apply -f k8s/student-service.yaml
-          kubectl apply -f k8s/ingress.yaml
+          kubectl apply -f k8s/
 
         #wait for pods to be ready
       - name: Wait for deployments to be ready
