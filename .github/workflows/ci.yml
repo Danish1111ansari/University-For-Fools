@@ -92,9 +92,9 @@ jobs:
         # install kubectl
 
       - name: Set up Kubectl
-        uses: engineerd/setup-kind@v0.6.2
+        uses: azure/setup-kubectl@v3
         with:
-          version: v0.23.0
+          version: v1.28.0
 
         # install kind 
       
