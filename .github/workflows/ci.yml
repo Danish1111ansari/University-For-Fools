@@ -108,7 +108,7 @@ jobs:
         run: |
           kind create cluster \
           --name university-cluster \
-          --config k8s/kind-config.yaml
+          --config kind/kind-config.yaml
       
       - name: Install NGINX Ingress Controller
         run: |
@@ -134,9 +134,19 @@ jobs:
 
       
       # Deploy services
-      - name: Deploy to Kubernetes manifests
+      - name: Deploy application manifests
         run: |
-          kubectl apply -f k8s/
+          kubectl apply -f k8s/course-deployment.yaml
+          kubectl apply -f k8s/course-service.yaml
+          kubectl apply -f k8s/student-deployment.yaml
+          kubectl apply -f k8s/student-service.yaml
+
+
+
+
+      - name: Apply ingress
+        run: |
+          kubectl apply -f k8s/ingress.yaml          
 
         #wait for pods to be ready
       # Wait for application deployments
