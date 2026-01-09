@@ -21,7 +21,7 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
-            - name: DB_PASSWORD
+            - name: COURSE_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: db-secret
