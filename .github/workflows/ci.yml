@@ -180,12 +180,12 @@ jobs:
           kubectl wait \
             --for=condition=Available \
             deployment/course-service \
-            --timeout=120s
+            --timeout=240s
 
           kubectl wait \
           --for=condition=Available \
           deployment/student-service \
-          --timeout=120s
+          --timeout=240s
 
 
       # verify deployments
