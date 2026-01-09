@@ -5,5 +5,3 @@ logging:
     level:
         root: INFO
 
-profile:
-    active: prod
