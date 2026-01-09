@@ -1,9 +1,9 @@
 
-POST http://university.local/api/v1/students
-Content-Type: application/json
+GET http://university.local/api/v1/students
+# Content-Type: application/json
 
-{
-  "name": "Danish Ansari",
-  "email": "danish@gmail.com",
-  "age": 22
-}   
+# {
+#   "name": "Danish Ansari",
+#   "email": "danish@gmail.com",
+#   "age": 22
+# }   

@@ -1,0 +1,21 @@
+server:
+    port : 8080
+
+logging:
+    level:
+        root: INFO
+
+
+spring:
+    datasource:
+        url: jdbc:postgresql://university-db.cnkeyow4a45e.eu-north-1.rds.amazonaws.com:5432/postgres
+        username: postgres
+        password: ${COURSE_DB_PASSWORD}
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        hibernate:
+            ddl-auto: update
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+
+    

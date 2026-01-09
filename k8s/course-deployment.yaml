@@ -22,3 +22,16 @@ spec:
         - name: SPRING_PROFILES_ACTIVE
           value: dev
 
+
+
+env:
+  - name: SPRING_PROFILES_ACTIVE
+    value: prod
+
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: db-secret
+        key: password
+
+
