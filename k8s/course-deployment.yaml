@@ -13,36 +13,16 @@ spec:
         app: course-service
     spec:
       containers:
-      - name: course-container
-        image: 0402danishansari/course-service:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8080
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: dev
-        
+        - name: course-container
+          image: 0402danishansari/course-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
-
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: db-secret
                   key: password
-
-
-
-
-env:
-  - name: SPRING_PROFILES_ACTIVE
-    value: prod
-
-  - name: DB_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: db-secret
-        key: password
-
-
