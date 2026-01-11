@@ -110,17 +110,13 @@ jobs:
           --name university-cluster \
           --config kind/kind-config.yaml
       
-      # - name: Install NGINX Ingress Controller
-      #   run: |
-      #     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 
-      # - name: Wait for ingress-nginx controller
-      #   run: |
-      #     kubectl wait \
-      #     --namespace ingress-nginx \
-      #     --for=condition=Available \
-      #     deployment/ingress-nginx-controller \
-      #     --timeout=180s
+      - name: Create DB secret
+        run: |
+          kubectl create secret generic db-secret \
+            --from-literal=password=${{ secrets.COURSE_DB_PASSWORD }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+
 
       - name: Pull Docker images from Docker Hub
         run: |
@@ -173,7 +169,7 @@ jobs:
         run: |
           kubectl apply -f k8s/ingress.yaml  
 
-          
+
           
       - name: Debug pods if rollout is slow
         run: |
