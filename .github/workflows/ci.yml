@@ -171,23 +171,23 @@ jobs:
 
       - name: Apply ingress
         run: |
-          kubectl apply -f k8s/ingress.yaml          
+          kubectl apply -f k8s/ingress.yaml  
+
+          
+          
+      - name: Debug pods if rollout is slow
+        run: |
+          kubectl get pods -o wide
+          kubectl describe deployment course-service || true
+          kubectl logs deployment/course-service --tail=50 || true
 
         #wait for pods to be ready
-      # Wait for application deployments
-      - name: Wait for application deployments to be ready
-        run: |
-          kubectl wait \
-            --for=condition=Available \
-            deployment/course-service \
-            --timeout=180s
+    
+      - name: Wait for course-service rollout
+        run: kubectl rollout status deployment/course-service --timeout=300s
 
-          kubectl wait \
-          --for=condition=Available \
-          deployment/student-service \
-          --timeout=180s
-
-
+      - name: Wait for student-service rollout
+        run: kubectl rollout status deployment/student-service --timeout=300s
       # verify deployments
       - name: Verify Deployments
         run: |
