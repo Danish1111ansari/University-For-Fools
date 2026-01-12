@@ -114,7 +114,7 @@ jobs:
       - name: Create DB secret
         run: |
           kubectl create secret generic db-secret \
-            --from-literal=password=${{ secrets.COURSE_DB_PASSWORD }} \
+            --from-literal=password=${{ secrets.SPRING_DATASOURCE_PASSWORD}} \
             --dry-run=client -o yaml | kubectl apply -f -
 
 
