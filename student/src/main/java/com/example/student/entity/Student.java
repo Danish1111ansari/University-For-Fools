@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -42,8 +44,18 @@ public class Student {
     @Column(nullable = false)
     private boolean active = true;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private Set<StudentCourse> courses = new HashSet<>();
+    @OneToOne(
+    mappedBy = "student",
+    cascade = CascadeType.ALL,
+    fetch = FetchType.LAZY,
+    optional = false
+    )   
+    private Address address;
+
+
+@OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+@JsonIgnore
+private Set<StudentCourse> courses = new HashSet<>();
 
 
 
