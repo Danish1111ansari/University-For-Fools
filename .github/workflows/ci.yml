@@ -118,17 +118,26 @@ jobs:
             --dry-run=client -o yaml | kubectl apply -f -
 
 
+      - name: Update image tags in k8s manifests
+        run: |
+          sed -i "s|IMAGE_TAG|${{ github.sha }}|g" k8s/student-deployment.yaml
+          sed -i "s|IMAGE_TAG|${{ github.sha }}|g" k8s/course-deployment.yaml
+          sed -i "s|DOCKER_USERNAME|${{ secrets.DOCKER_USERNAME }}|g" k8s/student-deployment.yaml
+          sed -i "s|DOCKER_USERNAME|${{ secrets.DOCKER_USERNAME }}|g" k8s/course-deployment.yaml
+
+
+
       - name: Pull Docker images from Docker Hub
         run: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/student-service:latest
-          docker pull ${{ secrets.DOCKER_USERNAME }}/course-service:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/student-service:${{ github.sha }}
+          docker pull ${{ secrets.DOCKER_USERNAME }}/course-service:${{ github.sha }}
 
       - name: Load Docker images into Kind
         run: |
-          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/student-service:latest --name university-cluster
-          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/course-service:latest --name university-cluster
+          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/student-service:${{ github.sha }} --name university-cluster
+          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/course-service:${{ github.sha }} --name university-cluster
 
-      
+          
       # Deploy services
       - name: Deploy application manifests
         run: |

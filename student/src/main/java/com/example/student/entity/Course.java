@@ -7,6 +7,8 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name = "courses",
@@ -37,6 +39,7 @@ public class Course {
     @Column(length = 1000)
     private String description;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<StudentCourse> studentCourses = new HashSet<>();
 

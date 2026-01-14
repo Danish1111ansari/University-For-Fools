@@ -1,5 +1,7 @@
 package com.example.student.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -39,6 +41,8 @@ public class Address {
     @Column(nullable = false, length = 20)
     private String zipCode;
 
+
+    @JsonManagedReference
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id",
         nullable = false,
