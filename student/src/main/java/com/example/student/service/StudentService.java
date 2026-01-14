@@ -42,27 +42,27 @@ public class StudentService {
        return studentRepository.save(student);  
     }
 
-public Student enrollCourse(Long std, Long crs) {
-    Student student = studentRepository.findById(std)
-        .orElseThrow(() -> new RuntimeException("Student not found"));
+public Student enrollCourse(Long studentId, Long courseId) {
 
-    Course course = courseRepository.findById(crs)
-        .orElseThrow(() -> new RuntimeException("Course not found"));
+    Student student = studentRepository.findById(studentId)
+            .orElseThrow(() -> new RuntimeException("Student not found"));
 
-    StudentCourse sc = new StudentCourse();
-    sc.setStudent(student);
-    sc.setCourse(course);
-    sc.setSemester(1);
-    sc.setActive(true);
-    sc.setId(new StudentCourseId(student.getId(), course.getId()));
+    Course course = courseRepository.findById(courseId)
+            .orElseThrow(() -> new RuntimeException("Course not found"));
 
-    student.getCourses().add(sc);
+    StudentCourse studentCourse = StudentCourse.builder()
+            .student(student)
+            .course(course)
+            .semester(1)
+            .active(true)
+            .build();
 
-    studentRepository.save(student);
+    // maintain both sides
+    student.getCourses().add(studentCourse);
 
-    return student; 
+    // save owning side via cascade
+    return studentRepository.save(student);
 }
-
 
 
 
