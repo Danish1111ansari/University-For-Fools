@@ -1,5 +1,7 @@
 package com.example.student.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,10 +20,14 @@ public class StudentCourse {
     @EmbeddedId
     private StudentCourseId id;
 
+    
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("studentId")
     @JoinColumn(name = "student_id")
-    private Student student;
+    @JsonIgnore
+private Student student;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("courseId")

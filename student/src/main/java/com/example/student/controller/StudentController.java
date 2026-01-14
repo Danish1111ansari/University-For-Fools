@@ -1,58 +1,45 @@
-package com.example.student.controller;
-
-import org.springframework.web.bind.annotation.RestController;
-
-import com.example.student.dto.StudentRequestDTO;
-import com.example.student.response.ApiResponse;
-import com.example.student.service.StudentService;
-
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-
+import com.example.student.entity.Student;
+import com.example.student.service.StudentService;
 
 @RestController
-@RequestMapping("/api/v1/students")
-@RequiredArgsConstructor
-
+@RequestMapping("/students")
 public class StudentController {
 
     private final StudentService studentService;
 
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
+    // Create student
     @PostMapping
-    public ResponseEntity<ApiResponse<StudentRequestDTO>> createStudent(@RequestBody @Valid StudentRequestDTO studentRequestDTO) {
-        // Implementation for creating a student
-        StudentRequestDTO savedStudent = studentService.createStudent(studentRequestDTO);
+    public ResponseEntity<Student> createStudent(
+            @RequestBody Student student) {
+        return ResponseEntity.ok(studentService.createStudent(student));
+    }
 
+    // Enroll student into course
+  @PostMapping("/{studentId}/courses/{courseId}")
+public ResponseEntity<Student> enrollCourse(
+        @PathVariable Long studentId,
+        @PathVariable Long courseId) {
 
-        ApiResponse<StudentRequestDTO> response = ApiResponse.success(
-            HttpStatus.CREATED.value(),
-            "Student created successfully",
-            savedStudent,
-            "/api/v1/students"
-        );
+    Student student = studentService.enrollCourse(studentId, courseId);
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    
+    return ResponseEntity.ok(student);
+}
 
-      }
-
-      @GetMapping
-      public String getMethodName() {
-        String health = "Student Service is up and running";
-          return health;
-      }
-      
-
-
-
+    // Get student
+    @GetMapping("/{id}")
+    public ResponseEntity<Student> getStudent(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.getStudent(id));
+    }
 }
