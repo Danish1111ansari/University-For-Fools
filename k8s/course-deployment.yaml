@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: course-container
-          image: 0402danishansari/course-service:latest
+          image: 0402danishansari/course-service:IMAGE_TAG
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

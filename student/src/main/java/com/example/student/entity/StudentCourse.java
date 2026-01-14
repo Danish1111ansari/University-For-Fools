@@ -32,6 +32,7 @@ private Student student;
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("courseId")
     @JoinColumn(name = "course_id")
+    @JsonIgnore
     private Course course;
 
 
