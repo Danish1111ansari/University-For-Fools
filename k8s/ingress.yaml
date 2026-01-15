@@ -15,6 +15,13 @@ spec:
               name: course-service
               port:
                 number: 8080
+        - path: /login
+          pathType: Prefix
+          backend:
+            service:
+              name: course-service
+              port:
+                number: 8080
         
         - path: /api/v1/students
           pathType: Prefix
