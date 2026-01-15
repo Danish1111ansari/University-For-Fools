@@ -15,7 +15,7 @@ spec:
       containers:
       - name: student-container
         image: 0402danishansari/student-service:IMAGE_TAG
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
         env:
